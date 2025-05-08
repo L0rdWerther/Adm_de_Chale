@@ -1,6 +1,6 @@
 # Projeto de Gerenciamento de Hospedagem
 
-Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedagens. Ele utiliza um banco de dados PostgreSQL para armazenar as informações.
+Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedagens. Ele utiliza um banco de dados PostgreSQL para armazenar informações.
 
 ## Informações
 
