@@ -34,3 +34,39 @@ CREATE TABLE Hospedagem (
                             FOREIGN KEY (codChale) REFERENCES Chale(codChale),
                             FOREIGN KEY (codCliente) REFERENCES Cliente(codCliente)
 );
+
+-- Tabela Funcionario
+CREATE TABLE Funcionario (
+                             codFuncionario SERIAL PRIMARY KEY,
+                             nomeFuncionario VARCHAR(100) NOT NULL,
+                             cpfFuncionario VARCHAR(14) NOT NULL,
+                             cargoFuncionario VARCHAR(50) NOT NULL,
+                             telefoneFuncionario VARCHAR(20),
+                             emailFuncionario VARCHAR(100)
+);
+
+-- Tabela Servico
+CREATE TABLE Servico (
+                         codServico SERIAL PRIMARY KEY,
+                         descricao VARCHAR(255) NOT NULL,
+                         valor DECIMAL(10, 2) NOT NULL
+);
+
+-- Tabela HospedagemServico
+CREATE TABLE HospedagemServico (
+                                   codHospedagem INT NOT NULL,
+                                   codServico INT NOT NULL,
+                                   quantidade INT DEFAULT 1,
+                                   PRIMARY KEY (codHospedagem, codServico),
+                                   FOREIGN KEY (codHospedagem) REFERENCES Hospedagem(codHospedagem),
+                                   FOREIGN KEY (codServico) REFERENCES Servico(codServico)
+);
+
+-- Tabela FuncionarioServico
+CREATE TABLE FuncionarioServico (
+                                    codFuncionario INT NOT NULL,
+                                    codServico INT NOT NULL,
+                                    PRIMARY KEY (codFuncionario, codServico),
+                                    FOREIGN KEY (codFuncionario) REFERENCES Funcionario(codFuncionario),
+                                    FOREIGN KEY (codServico) REFERENCES Servico(codServico)
+);

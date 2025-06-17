@@ -49,10 +49,22 @@ Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedag
     private static final String PASSWORD = "sua_senha";
     ```
 
-## Executando a Aplicação
+## Compilação e Execução Manual
 
-1. Compile e execute a classe `src/MainApp.java`.
-2. A interface gráfica será exibida com opções para gerenciar clientes, chalés e hospedagens.
+1. Compile os arquivos Java utilizando o comando:
+    ```sh
+    javac -cp ./dependencia/postgresql-42.7.4.jar src/*.java
+    ```
+
+2. Execute a aplicação com o comando:
+    ```sh
+    java -cp "src:./dependencia/postgresql-42.7.4.jar" MainApp
+    ```
+
+3. Para remover os arquivos compilados (`.class`), utilize:
+    ```sh
+    rm src/*.class
+    ```
 
 ## Funcionalidades
 
