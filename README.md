@@ -1,11 +1,4 @@
-# Projeto de Gerenciamento de Hospedagem
-
 Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedagens. Ele utiliza um banco de dados PostgreSQL para armazenar informações.
-
-## Informações
-
-    Disciplina: Programação de Computadores 2
-    Autores: João Henrique Rodrigues Lopes e Sofia Teixeira da Paixão da Silva
 
 
 ## Estrutura do Projeto
@@ -66,16 +59,11 @@ Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedag
     rm src/*.class
     ```
 
-## Funcionalidades
-
-- **Clientes**: Cadastro, visualização e atualização de clientes.
-- **Chalés**: Cadastro, visualização e atualização de chalés.
-- **Hospedagens**: Cadastro, visualização e atualização de hospedagens.
 
 ## Estrutura das Tabelas
 
-### Cliente
-```sql
+```sh
+-- Cliente
 CREATE TABLE Cliente (
     codCliente SERIAL PRIMARY KEY,
     nomeCliente VARCHAR(100) NOT NULL,
@@ -87,10 +75,8 @@ CREATE TABLE Cliente (
     CEPCliente VARCHAR(10) NOT NULL,
     nascimentoCliente DATE NOT NULL
 );
-```
 
-### Chale
-```sql
+-- Chalé
 CREATE TABLE Chale (
     codChale SERIAL PRIMARY KEY,
     localizacao VARCHAR(255) NOT NULL,
@@ -98,10 +84,8 @@ CREATE TABLE Chale (
     valorAltaEstacao DECIMAL(10, 2) NOT NULL,
     valorBaixaEstacao DECIMAL(10, 2) NOT NULL
 );
-```
 
-### Hospedagem
-```sql
+-- Hospedagem
 CREATE TABLE Hospedagem (
     codHospedagem SERIAL PRIMARY KEY,
     codChale INT NOT NULL,
@@ -115,4 +99,41 @@ CREATE TABLE Hospedagem (
     FOREIGN KEY (codChale) REFERENCES Chale(codChale),
     FOREIGN KEY (codCliente) REFERENCES Cliente(codCliente)
 );
+
+-- Funcionário
+CREATE TABLE Funcionario (
+    codFuncionario SERIAL PRIMARY KEY,
+    nomeFuncionario VARCHAR(100) NOT NULL,
+    cpfFuncionario VARCHAR(14) NOT NULL,
+    cargoFuncionario VARCHAR(50) NOT NULL,
+    telefoneFuncionario VARCHAR(20),
+    emailFuncionario VARCHAR(100)
+);
+
+-- Serviço
+CREATE TABLE Servico (
+    codServico SERIAL PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+-- Hospedagem x Serviço
+CREATE TABLE HospedagemServico (
+    codHospedagem INT NOT NULL,
+    codServico INT NOT NULL,
+    quantidade INT DEFAULT 1,
+    PRIMARY KEY (codHospedagem, codServico),
+    FOREIGN KEY (codHospedagem) REFERENCES Hospedagem(codHospedagem),
+    FOREIGN KEY (codServico) REFERENCES Servico(codServico)
+);
+
+-- Funcionário x Serviço
+CREATE TABLE FuncionarioServico (
+    codFuncionario INT NOT NULL,
+    codServico INT NOT NULL,
+    PRIMARY KEY (codFuncionario, codServico),
+    FOREIGN KEY (codFuncionario) REFERENCES Funcionario(codFuncionario),
+    FOREIGN KEY (codServico) REFERENCES Servico(codServico)
+);
+```
 ```
