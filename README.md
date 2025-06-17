@@ -1,31 +1,10 @@
 Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedagens. Ele utiliza um banco de dados PostgreSQL para armazenar informações.
 
-
-## Estrutura do Projeto
-
-- `src/MainApp.java`: Classe principal que inicializa a aplicação.
-- `src/ClienteForm.java`: Formulário para cadastro de clientes.
-- `src/ChaleForm.java`: Formulário para cadastro de chalés.
-- `src/HospedagemForm.java`: Formulário para cadastro de hospedagens.
-- `src/ClienteTable.java`: Tabela para exibir os clientes cadastrados.
-- `src/ChaleTable.java`: Tabela para exibir os chalés cadastrados.
-- `src/HospedagemTable.java`: Tabela para exibir as hospedagens cadastradas.
-- `src/Cliente.java`: Classe modelo para clientes.
-- `src/Chale.java`: Classe modelo para chalés.
-- `src/Hospedagem.java`: Classe modelo para hospedagens.
-- `src/DatabaseUtil.java`: Classe utilitária para conexão com o banco de dados.
-- `schema.sql`: Script SQL para criação das tabelas no banco de dados.
-
 ## Requisitos
 
 - Java 8 ou superior
 - PostgreSQL
 - IDE Java
-
-## Configuração do Banco de Dados
-
-1. Crie um banco de dados PostgreSQL.
-2. Execute o script `schema.sql` para criar as tabelas necessárias.
 
 ## Configuração do Projeto
 
@@ -34,8 +13,7 @@ Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedag
     git clone https://github.com/L0rdWerther/Trabalho-FInal-PC2
     ```
 2. Abra o projeto na sua IDE Java.
-3. Adicione a biblioteca `dependencia/postgresql-42.2.23.jar` ao projeto.
-4. Configure as credenciais do banco de dados no arquivo `src/DatabaseUtil.java`:
+3. Configure as credenciais do banco de dados no arquivo `src/DatabaseUtil.java`:
     ```java
     private static final String URL = "jdbc:postgresql://localhost:5432/seu_banco_de_dados";
     private static final String USER = "seu_usuario";
@@ -58,7 +36,6 @@ Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedag
     ```sh
     rm src/*.class
     ```
-
 
 ## Estrutura das Tabelas
 
