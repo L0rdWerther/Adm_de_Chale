@@ -113,4 +113,3 @@ CREATE TABLE FuncionarioServico (
     FOREIGN KEY (codServico) REFERENCES Servico(codServico)
 );
 ```
-```
