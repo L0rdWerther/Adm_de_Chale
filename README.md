@@ -1,18 +1,22 @@
-Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedagens. Ele utiliza um banco de dados PostgreSQL para armazenar informações.
+# Gerenciador de Chalés e Hospedagens
+
+Este projeto é uma aplicação Java para gerenciar clientes, chalés, hospedagens e serviços associados. Ele utiliza um banco de dados PostgreSQL para armazenar as informações.
 
 ## Requisitos
 
-- Java 8 ou superior
-- PostgreSQL
-- IDE Java
+- **Java**: Versão 8 ou superior.
+- **PostgreSQL**: Banco de dados relacional.
+- **IDE Java**: Recomenda-se o uso do IntelliJ IDEA.
 
 ## Configuração do Projeto
 
 1. Clone o repositório:
     ```sh
-    git clone https://github.com/L0rdWerther/Trabalho-FInal-PC2
+    git clone https://github.com/L0rdWerther/Trabalho-Final-PC2
     ```
+
 2. Abra o projeto na sua IDE Java.
+
 3. Configure as credenciais do banco de dados no arquivo `src/DatabaseUtil.java`:
     ```java
     private static final String URL = "jdbc:postgresql://localhost:5432/seu_banco_de_dados";
@@ -20,96 +24,64 @@ Este projeto é uma aplicação Java para gerenciar clientes, chalés e hospedag
     private static final String PASSWORD = "sua_senha";
     ```
 
-## Compilação e Execução Manual
+4. Execute o script `schema.sql` para criar as tabelas e funções no banco de dados.
 
-1. Compile os arquivos Java utilizando o comando:
+## Estrutura do Projeto
+
+### Diretórios Principais
+- `src/`: Contém os arquivos Java da aplicação.
+- `dependencia/`: Contém o driver JDBC para PostgreSQL.
+
+### Funcionalidades
+- **Gerenciamento de Clientes**: Cadastro e visualização de clientes.
+- **Gerenciamento de Chalés**: Controle de disponibilidade e informações dos chalés.
+- **Hospedagens**: Registro de hospedagens, cálculo de valores e atualização de status.
+- **Serviços**: Adição de serviços às hospedagens.
+- **Relatórios**: Visualização de hóspedes ativos e outros dados.
+
+## Compilação e Execução
+
+### Compilação Manual
+1. Compile os arquivos Java:
     ```sh
     javac -cp ./dependencia/postgresql-42.7.4.jar src/*.java
     ```
 
-2. Execute a aplicação com o comando:
+2. Execute a aplicação:
     ```sh
     java -cp "src:./dependencia/postgresql-42.7.4.jar" MainApp
     ```
 
-3. Para remover os arquivos compilados (`.class`), utilize:
+3. Para limpar os arquivos compilados:
     ```sh
     rm src/*.class
     ```
 
-## Estrutura das Tabelas
+### Execução na IDE
+1. Configure o projeto na sua IDE.
+2. Execute a classe `MainApp` para iniciar a aplicação.
 
-```sh
--- Cliente
-CREATE TABLE Cliente (
-    codCliente SERIAL PRIMARY KEY,
-    nomeCliente VARCHAR(100) NOT NULL,
-    rgCliente VARCHAR(9) NOT NULL,
-    enderecoCliente VARCHAR(255) NOT NULL,
-    bairroCliente VARCHAR(100) NOT NULL,
-    cidadeCliente VARCHAR(100) NOT NULL,
-    estadoCliente VARCHAR(2) NOT NULL,
-    CEPCliente VARCHAR(10) NOT NULL,
-    nascimentoCliente DATE NOT NULL
-);
+## Estrutura do Banco de Dados
 
--- Chalé
-CREATE TABLE Chale (
-    codChale SERIAL PRIMARY KEY,
-    localizacao VARCHAR(255) NOT NULL,
-    capacidade INT NOT NULL,
-    valorAltaEstacao DECIMAL(10, 2) NOT NULL,
-    valorBaixaEstacao DECIMAL(10, 2) NOT NULL
-);
+### Tabelas
+- **Cliente**: Armazena informações dos clientes.
+- **Chale**: Gerencia os chalés disponíveis.
+- **Hospedagem**: Registra as hospedagens realizadas.
+- **Servico**: Define os serviços disponíveis.
+- **HospedagemServico**: Relaciona hospedagens com serviços.
+- **Funcionario**: Gerencia os funcionários.
+- **FuncionarioServico**: Relaciona funcionários com serviços.
 
--- Hospedagem
-CREATE TABLE Hospedagem (
-    codHospedagem SERIAL PRIMARY KEY,
-    codChale INT NOT NULL,
-    estado VARCHAR(255) NOT NULL,
-    dataInicio DATE NOT NULL,
-    dataFim DATE,
-    qtdPessoas INT NOT NULL,
-    desconto DECIMAL(5, 2),
-    valorFinal DECIMAL(10, 2),
-    codCliente INT,
-    FOREIGN KEY (codChale) REFERENCES Chale(codChale),
-    FOREIGN KEY (codCliente) REFERENCES Cliente(codCliente)
-);
+### Funções e Triggers
+- **valor_total_gasto(hospede_id)**: Calcula o valor total gasto por um cliente.
+- **liberar_chale(cod_chale)**: Libera um chalé e atualiza o status da hospedagem.
+- **hospedes_ativos**: View que lista os hóspedes ativos.
 
--- Funcionário
-CREATE TABLE Funcionario (
-    codFuncionario SERIAL PRIMARY KEY,
-    nomeFuncionario VARCHAR(100) NOT NULL,
-    cpfFuncionario VARCHAR(14) NOT NULL,
-    cargoFuncionario VARCHAR(50) NOT NULL,
-    telefoneFuncionario VARCHAR(20),
-    emailFuncionario VARCHAR(100)
-);
+## Observações
 
--- Serviço
-CREATE TABLE Servico (
-    codServico SERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL,
-    valor DECIMAL(10, 2) NOT NULL
-);
+- Certifique-se de que o banco de dados PostgreSQL esteja em execução antes de iniciar a aplicação.
+- Caso encontre erros, verifique as configurações de conexão no arquivo `DatabaseUtil.java`.
 
--- Hospedagem x Serviço
-CREATE TABLE HospedagemServico (
-    codHospedagem INT NOT NULL,
-    codServico INT NOT NULL,
-    quantidade INT DEFAULT 1,
-    PRIMARY KEY (codHospedagem, codServico),
-    FOREIGN KEY (codHospedagem) REFERENCES Hospedagem(codHospedagem),
-    FOREIGN KEY (codServico) REFERENCES Servico(codServico)
-);
+## Licença
 
--- Funcionário x Serviço
-CREATE TABLE FuncionarioServico (
-    codFuncionario INT NOT NULL,
-    codServico INT NOT NULL,
-    PRIMARY KEY (codFuncionario, codServico),
-    FOREIGN KEY (codFuncionario) REFERENCES Funcionario(codFuncionario),
-    FOREIGN KEY (codServico) REFERENCES Servico(codServico)
-);
-```
+Este projeto é de uso acadêmico e não possui licença específica.
