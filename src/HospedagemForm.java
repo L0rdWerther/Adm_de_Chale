@@ -82,24 +82,25 @@ public class HospedagemForm extends JFrame {
         });
     }
 
+    //transaction example
     private void salvarHospedagem() {
-        try {
-            int codChale = Integer.parseInt(codChaleField.getText());
-            String status = statusField.getText();
-            String dataInicio = dataInicioField.getText();
-            String dataFim = dataFimField.getText();
-            int qtdPessoas = Integer.parseInt(qtdPessoasField.getText());
-            double valorDiaria = Double.parseDouble(valorDiariaField.getText());
-            int codCliente = Integer.parseInt(codClienteField.getText());
-            double desconto = Double.parseDouble(descontoField.getText());
+        try (Connection connection = DatabaseUtil.getConnection()) {
+            connection.setAutoCommit(false); // Inicia a transação
 
-            Hospedagem hospedagem = new Hospedagem(codChale, status, dataInicio, dataFim, qtdPessoas, valorDiaria, codCliente, desconto);
-            hospedagens.add(hospedagem);
+            try {
+                int codChale = Integer.parseInt(codChaleField.getText());
+                String status = statusField.getText();
+                String dataInicio = dataInicioField.getText();
+                String dataFim = dataFimField.getText();
+                int qtdPessoas = Integer.parseInt(qtdPessoasField.getText());
+                double valorDiaria = Double.parseDouble(valorDiariaField.getText());
+                int codCliente = Integer.parseInt(codClienteField.getText());
+                double desconto = Double.parseDouble(descontoField.getText());
 
-            try (Connection connection = DatabaseUtil.getConnection()) {
-                String sql = "INSERT INTO Hospedagem (codChale, status, dataInicio, dataFim, qtdPessoas, valorDiaria, codCliente, desconto) " +
+                // Insere a hospedagem
+                String sqlHospedagem = "INSERT INTO Hospedagem (codChale, status, dataInicio, dataFim, qtdPessoas, valorDiaria, codCliente, desconto) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (PreparedStatement statement = connection.prepareStatement(sqlHospedagem)) {
                     statement.setInt(1, codChale);
                     statement.setString(2, status);
                     statement.setDate(3, java.sql.Date.valueOf(dataInicio));
@@ -110,8 +111,18 @@ public class HospedagemForm extends JFrame {
                     statement.setDouble(8, desconto);
                     statement.executeUpdate();
                 }
+
+                // Atualiza o status do chalé
+                String sqlChale = "UPDATE Chale SET status = 'ocupado' WHERE codChale = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sqlChale)) {
+                    statement.setInt(1, codChale);
+                    statement.executeUpdate();
+                }
+
+                connection.commit(); // Confirma a transação
                 JOptionPane.showMessageDialog(null, "Hospedagem salva com sucesso no banco de dados!");
             } catch (SQLException ex) {
+                connection.rollback(); // Reverte a transação em caso de erro
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Erro ao salvar hospedagem no banco de dados: " + ex.getMessage());
             }
