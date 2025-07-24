@@ -1,21 +1,21 @@
 public class Hospedagem {
     private int codChale;
-    private String estado;
+    private String status;
     private String dataInicio;
     private String dataFim;
-    private int qtdePessoas;
-    private double valorFinal;
+    private int qtdPessoas;
+    private double valorDiaria;
     private int codCliente;
-    private double desconto; // Novo campo
+    private double desconto;
 
-    public Hospedagem(int codChale, String estado, String dataInicio, String dataFim, int qtdePessoas, double valorFinal, int codCliente, double desconto) {
+    public Hospedagem(int codChale, String status, String dataInicio, String dataFim, int qtdPessoas, double valorDiaria, int codCliente, double desconto) {
         this.codChale = codChale;
-        this.estado = estado;
+        this.status = status;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.qtdePessoas = qtdePessoas;
-        this.valorFinal = valorFinal;
+        this.qtdPessoas = qtdPessoas;
+        this.valorDiaria = valorDiaria;
         this.codCliente = codCliente;
-        this.desconto = desconto; // Novo campo
+        this.desconto = desconto;
     }
 }

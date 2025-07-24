@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 
 public class ClienteForm extends JFrame {
     private JTextField nomeField;
-    private JTextField rgField;
     private JTextField enderecoField;
     private JTextField bairroField;
     private JTextField cidadeField;
@@ -29,7 +28,6 @@ public class ClienteForm extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         nomeField = new JTextField(20);
-        rgField = new JTextField(20);
         enderecoField = new JTextField(20);
         bairroField = new JTextField(20);
         cidadeField = new JTextField(20);
@@ -40,8 +38,6 @@ public class ClienteForm extends JFrame {
 
         add(new JLabel("Nome:"));
         add(nomeField);
-        add(new JLabel("RG:"));
-        add(rgField);
         add(new JLabel("Endereço:"));
         add(enderecoField);
         add(new JLabel("Bairro:"));
@@ -73,7 +69,6 @@ public class ClienteForm extends JFrame {
 
     private void salvarCliente() {
         String nome = nomeField.getText();
-        String rg = rgField.getText();
         String endereco = enderecoField.getText();
         String bairro = bairroField.getText();
         String cidade = cidadeField.getText();
@@ -87,20 +82,19 @@ public class ClienteForm extends JFrame {
             return;
         }
 
-        Cliente cliente = new Cliente(nome, rg, endereco, bairro, cidade, estado, cep, nascimento);
+        Cliente cliente = new Cliente(nome, endereco, bairro, cidade, estado, cep, nascimento);
         clientes.add(cliente);
 
         try (Connection connection = DatabaseUtil.getConnection()) {
-            String sql = "INSERT INTO Cliente (nomeCliente, rgCliente, enderecoCliente, bairroCliente, cidadeCliente, estadoCliente, CEPCliente, nascimentoCliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Cliente (nomeCliente, enderecoCliente, bairroCliente, cidadeCliente, estadoCliente, CEPCliente, nascimentoCliente) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, nome);
-                statement.setString(2, rg);
-                statement.setString(3, endereco);
-                statement.setString(4, bairro);
-                statement.setString(5, cidade);
-                statement.setString(6, estado);
-                statement.setString(7, cep);
-                statement.setDate(8, java.sql.Date.valueOf(nascimento));
+                statement.setString(2, endereco);
+                statement.setString(3, bairro);
+                statement.setString(4, cidade);
+                statement.setString(5, estado);
+                statement.setString(6, cep);
+                statement.setDate(7, java.sql.Date.valueOf(nascimento));
                 statement.executeUpdate();
             }
             JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso no banco de dados!");

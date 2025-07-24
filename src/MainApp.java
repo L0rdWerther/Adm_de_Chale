@@ -10,6 +10,7 @@ public class MainApp extends JFrame {
     private JButton hospedagemServicoButton;
     private JButton servicoButton;
     private JButton funcionarioServico;
+    private JButton liberarChaleButton;
 
     public MainApp() {
         setTitle("Main Application");
@@ -21,9 +22,10 @@ public class MainApp extends JFrame {
         chaleButton = new JButton("Abrir Chale");
         hospedagemButton = new JButton("Abrir Hospedagem");
         funcionarioButton = new JButton("Abrir Funcionário");
-        hospedagemServicoButton = new JButton("Abrir Hospedagem Serviço");
         servicoButton = new JButton("Abrir Serviço");
         funcionarioServico = new JButton("Abrir Funcionario Servico");
+        hospedagemServicoButton = new JButton("Abrir Hospedagem Serviço");
+        liberarChaleButton = new JButton("Liberar Chalé");
 
         add(clienteButton);
         add(chaleButton);
@@ -32,6 +34,15 @@ public class MainApp extends JFrame {
         add(hospedagemServicoButton);
         add(servicoButton);
         add(funcionarioServico);
+        add(liberarChaleButton);
+
+        liberarChaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LiberarChaleDialog liberarChaleDialog = new LiberarChaleDialog();
+                liberarChaleDialog.setVisible(true);
+            }
+        });
 
         clienteButton.addActionListener(new ActionListener() {
             @Override
