@@ -142,15 +142,22 @@ EXECUTE FUNCTION liberar_chale_automaticamente();
 CREATE OR REPLACE PROCEDURE liberar_chale(cod_chale INT)
     LANGUAGE plpgsql AS $$
 BEGIN
+    -- Atualiza o status do chalé
     UPDATE Chale
     SET status = 'disponivel'
     WHERE codChale = cod_chale;
-    Update Hospedagem
+
+    -- Finaliza a hospedagem ativa
+    UPDATE Hospedagem
     SET status = 'finalizada'
     WHERE codChale = cod_chale
       AND status = 'ativa';
+
+    -- Mensagem de sucesso
+    RAISE NOTICE 'Chalé % liberado com sucesso.', cod_chale;
 END;
 $$;
+
 
 -- VIEW: HOSPEDES ATIVOS
 CREATE OR REPLACE VIEW hospedes_ativos AS
@@ -159,6 +166,14 @@ FROM Cliente c
          JOIN Hospedagem h ON h.codCliente = c.codCliente
 WHERE h.status = 'ativa'
   AND CURRENT_DATE BETWEEN h.dataInicio AND h.dataFim;
+
+-- VIEW: CHALES DISPONIVEIS
+CREATE OR REPLACE VIEW chales_disponiveis AS
+SELECT DISTINCT c.*
+FROM Chale c
+         JOIN Chale h ON h.codChale = c.codChale
+WHERE h.status = 'disponivel';
+
 
 -- INDICES
 CREATE INDEX idx_cliente_nome ON Cliente(nomeCliente);
